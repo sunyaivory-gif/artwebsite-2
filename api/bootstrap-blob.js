@@ -39,6 +39,12 @@ function replaceImageRefs(content, urlByPath) {
   }
 }
 
+function siteOrigin(req) {
+  const proto = req.headers['x-forwarded-proto'] || 'https';
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  return `${proto}://${host}`;
+}
+
 export default async function handler(req, res) {
   try {
     const password = req.method === 'POST' ? req.body?.password : req.query?.password;
@@ -50,8 +56,13 @@ export default async function handler(req, res) {
     const content = JSON.parse(await fs.readFile(path.join(root, 'content.json'), 'utf8'));
     const urlByPath = {};
 
+    const origin = siteOrigin(req);
     for (const ref of collectImageRefs(content)) {
-      const body = await fs.readFile(path.join(root, ref));
+      const imageRes = await fetch(`${origin}/${ref}`);
+      if (!imageRes.ok) {
+        throw new Error(`Could not read ${ref} from live site: ${imageRes.status}`);
+      }
+      const body = Buffer.from(await imageRes.arrayBuffer());
       const blob = await put(`site/${ref}`, body, {
         access: ACCESS,
         allowOverwrite: true,
