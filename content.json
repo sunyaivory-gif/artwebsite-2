@@ -1,0 +1,105 @@
+{
+  "password": "admin123",
+  "site": {
+    "title": "Sunya — art & places",
+    "signature": "S"
+  },
+  "artSectionTitle": "Art",
+  "travelSectionTitle": "Places",
+  "about": {
+    "name": "Sunya",
+    "tagline": "art &middot; places",
+    "quote": "\"Life is a collection of fragments —<br>a sketch, a photograph, a place<br>that stays with you.\"",
+    "bio": [
+      "I work with pencil, watercolor, and gouache — trying to catch the colors and small details that make everyday life worth looking at. I'm drawn to things that feel both peaceful and vibrant at the same time. ",
+      "I admire Claude Monet for how he could make a haystack or a water lily feel monumental through light and color. Camille Pissarro too — his bright palettes somehow never feel forced; they belong exactly where he placed them.",
+      "These sketches, paintings, and photographs come from a notebook and a camera carried through different cities and seasons. Some are studied, others are stumbled upon. All of them are attempts to hold onto something worth looking at twice."
+    ],
+    "heroImage": "images/hero-train-window.jpg",
+    "contact": {
+      "email": {
+        "label": "email",
+        "href": "mailto:sunyaivory@gmail.com"
+      },
+      "instagram": {
+        "label": "instagram",
+        "href": "https://www.instagram.com/sunyaivory/"
+      }
+    },
+    "current": "Currently: sketching in pencil"
+  },
+  "art": [
+    {
+      "title": "Portrait",
+      "medium": "pencil",
+      "src": "images/art-1-portrait.jpg",
+      "alt": "Portrait",
+      "description": "I came across a photo of this actress on Instagram and was stopped by her expression — quiet, direct, yet gentle."
+    },
+    {
+      "title": "Ducks",
+      "medium": "gouache",
+      "src": "images/art-2-ducks.jpg",
+      "alt": "Ducks",
+      "description": "I wanted to paint something in motion — the image of ducks gliding through a creek came to mind. Simple movement, reflected light, the small moments that get overlooked."
+    }
+  ],
+  "travel": [
+    {
+      "src": "images/travel-1-ho-chi-minh-city-skyline.jpg",
+      "alt": "skyline",
+      "caption": "skyline",
+      "location": "Ho Chi Minh City",
+      "description": "After living in this city for a while, I stopped looking out the window. But this sunset — the colors were so vivid they pulled me right out of my routine."
+    },
+    {
+      "src": "images/travel-2-japanese-restaurant-wall-collage.jpg",
+      "alt": "wall collage",
+      "caption": "wall collage",
+      "location": "Japanese restaurant",
+      "description": "The old retro-style posters covering the walls made the space feel more like a gallery than a restaurant. It became one of those small, unexpectedly memorable places."
+    },
+    {
+      "src": "images/travel-3-shanghai-wall-of-doodles.jpg",
+      "alt": "wall of doodles",
+      "caption": "wall of doodles",
+      "location": "Shanghai",
+      "description": "While walking through a busy shopping street in Shanghai, I spotted a corner of a store covered in hand-drawn doodles of cats. It became the highlight of my trip."
+    },
+    {
+      "src": "images/travel-4-yunnan-landscape.jpg",
+      "alt": "Landscape",
+      "caption": "Landscape",
+      "location": "Yunnan",
+      "description": "After a long climb up the mountain, this was the first view that opened before me — the town below, the lake between, and the mountains far behind. "
+    },
+    {
+      "src": "images/travel-5-yunnan-lakeview.jpg",
+      "alt": "lakeview",
+      "caption": "lakeview",
+      "location": "Yunnan",
+      "description": "It was a busy day of sightseeing, but this lake had a stillness to it. A quiet pause in a full day — I liked the calmness of this view."
+    },
+    {
+      "src": "images/travel-6-hong-kong-skyline.jpg",
+      "alt": "Skyline",
+      "caption": "Skyline",
+      "location": "Hong Kong",
+      "description": "Across the water, the Hong Kong skyline felt calm and enormous at the same time. The buildings felt quiet instead."
+    },
+    {
+      "src": "images/travel-7-guangzhou-river.jpg",
+      "alt": "River",
+      "caption": "River",
+      "location": "Guangzhou",
+      "description": "From the boat, I noticed this small cat sitting across the water, framed by red rails, plants, and old storefronts. "
+    },
+    {
+      "src": "images/travel-8-shenzhen-skyline.jpg",
+      "alt": "Skyline",
+      "caption": "Skyline",
+      "location": "Shenzhen",
+      "description": "At night, Shenzhen turned into lines of color and light. The buildings felt almost unreal: sharp, bright, and futuristic."
+    }
+  ]
+}
