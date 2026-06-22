@@ -13,9 +13,12 @@ export default async function handler(req, res) {
       return res.status(500).send('Missing ADMIN_PASSWORD');
     }
 
-    const { password, content } = req.body || {};
+    const { password, content, validateOnly } = req.body || {};
     if (password !== ADMIN_PASSWORD) {
       return res.status(401).send('Incorrect password');
+    }
+    if (validateOnly) {
+      return res.status(200).send('Password OK.');
     }
     if (!content || typeof content !== 'object') {
       return res.status(400).send('Invalid content payload');
