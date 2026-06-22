@@ -1,4 +1,4 @@
-import { put } from '@vercel/blob';
+import { list, put } from '@vercel/blob';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -39,6 +39,83 @@ function replaceImageRefs(content, urlByPath) {
   }
 }
 
+function keyForArt(item) {
+  return String(item?.title || '').trim().toLowerCase();
+}
+
+function keyForTravel(item) {
+  return [item?.caption, item?.location, item?.alt]
+    .map(value => String(value || '').trim().toLowerCase())
+    .join('|');
+}
+
+function mapBy(items, keyFn) {
+  const mapped = new Map();
+  for (const item of items || []) {
+    const key = keyFn(item);
+    if(key && !mapped.has(key)) mapped.set(key, item);
+  }
+  return mapped;
+}
+
+async function readCurrentBlobContent() {
+  const blobs = await list({ prefix: CONTENT_PATH, limit: 1 });
+  const blob = blobs.blobs.find(item => item.pathname === CONTENT_PATH) || blobs.blobs[0];
+  if (!blob?.url) return null;
+
+  const freshUrl = `${blob.url}${blob.url.includes('?') ? '&' : '?'}t=${Date.now()}`;
+  const response = await fetch(freshUrl, { cache: 'no-store' });
+  if (!response.ok) return null;
+  return response.json();
+}
+
+function mergeCurrentContent(current, seeded) {
+  if (!current || typeof current !== 'object') return seeded;
+
+  const merged = {
+    ...seeded,
+    ...current,
+    site: { ...seeded.site, ...current.site },
+    about: { ...seeded.about, ...current.about }
+  };
+
+  if (!merged.about.heroImage) merged.about.heroImage = seeded.about?.heroImage;
+
+  const seededArt = mapBy(seeded.art, keyForArt);
+  merged.art = Array.isArray(current.art)
+    ? current.art.map((item, index) => ({
+        ...(seeded.art?.[index] || {}),
+        ...item,
+        src: item.src || seededArt.get(keyForArt(item))?.src || seeded.art?.[index]?.src
+      }))
+    : seeded.art;
+
+  const seededTravel = mapBy(seeded.travel, keyForTravel);
+  merged.travel = Array.isArray(current.travel)
+    ? current.travel.map((item, index) => ({
+        ...(seeded.travel?.[index] || {}),
+        ...item,
+        src: item.src || seededTravel.get(keyForTravel(item))?.src || seeded.travel?.[index]?.src
+      }))
+    : seeded.travel;
+
+  return merged;
+}
+
+function validateImageSources(content) {
+  const missing = [];
+  if (!content.about?.heroImage) missing.push('about.heroImage');
+  (content.art || []).forEach((item, index) => {
+    if (!item.src) missing.push(`art[${index}]`);
+  });
+  (content.travel || []).forEach((item, index) => {
+    if (!item.src) missing.push(`travel[${index}]`);
+  });
+  if (missing.length) {
+    throw new Error(`Missing image src after repair: ${missing.join(', ')}`);
+  }
+}
+
 function siteOrigin(req) {
   const proto = req.headers['x-forwarded-proto'] || 'https';
   const host = req.headers['x-forwarded-host'] || req.headers.host;
@@ -73,8 +150,11 @@ export default async function handler(req, res) {
     }
 
     replaceImageRefs(content, urlByPath);
+    const current = await readCurrentBlobContent();
+    const repairedContent = mergeCurrentContent(current, content);
+    validateImageSources(repairedContent);
 
-    await put(CONTENT_PATH, JSON.stringify(content, null, 2), {
+    await put(CONTENT_PATH, JSON.stringify(repairedContent, null, 2), {
       access: ACCESS,
       allowOverwrite: true,
       addRandomSuffix: false,
@@ -84,7 +164,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       message: 'Moved content and images to Vercel Blob.',
-      uploadedImages: Object.keys(urlByPath).length
+      uploadedImages: Object.keys(urlByPath).length,
+      preservedCurrentContent: !!current
     });
   } catch (error) {
     return res.status(500).send(`Blob bootstrap failed: ${error.message}`);
