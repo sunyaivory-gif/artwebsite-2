@@ -1,7 +1,7 @@
 {
   "password": "admin123",
   "site": {
-    "title": "Sunya — art & places",
+    "title": "Sunya \u2014 art & places",
     "signature": "SI"
   },
   "artSectionTitle": "Art",
@@ -9,10 +9,10 @@
   "about": {
     "name": "Sunya",
     "tagline": "art &middot; places",
-    "quote": "\"Life is a collection of fragments —<br>a sketch, a photograph, a place<br>that stays with you.\"",
+    "quote": "\"Life is a collection of fragments \u2014<br>a sketch, a photograph, a place<br>that stays with you.\"",
     "bio": [
-      "I work with pencil, watercolor, and gouache — trying to catch the colors and small details that make everyday life worth looking at. I'm drawn to things that feel both peaceful and vibrant at the same time. ",
-      "I admire Claude Monet for how he could make a haystack or a water lily feel monumental through light and color. Camille Pissarro too — his bright palettes somehow never feel forced; they belong exactly where he placed them.",
+      "I work with pencil, watercolor, and gouache \u2014 trying to catch the colors and small details that make everyday life worth looking at. I'm drawn to things that feel both peaceful and vibrant at the same time. ",
+      "I admire Claude Monet for how he could make a haystack or a water lily feel monumental through light and color. Camille Pissarro too \u2014 his bright palettes somehow never feel forced; they belong exactly where he placed them.",
       "These sketches, paintings, and photographs come from a notebook and a camera carried through different cities and seasons. Some are studied, others are stumbled upon. All of them are attempts to hold onto something worth looking at twice."
     ],
     "heroImage": "images/hero-train-window.jpg",
@@ -34,14 +34,14 @@
       "medium": "pencil",
       "src": "images/art-1-portrait.jpg",
       "alt": "Portrait",
-      "description": "I came across a photo of this actress on Instagram and was stopped by her expression — quiet, direct, yet gentle."
+      "description": "I came across a photo of this actress on Instagram and was stopped by her expression \u2014 quiet, direct, yet gentle."
     },
     {
       "title": "Ducks",
       "medium": "gouache",
       "src": "images/art-2-ducks.jpg",
       "alt": "Ducks",
-      "description": "I wanted to paint something in motion — the image of ducks gliding through a creek came to mind. Simple movement, reflected light, the small moments that get overlooked."
+      "description": "I wanted to paint something in motion \u2014 the image of ducks gliding through a creek came to mind. Simple movement, reflected light, the small moments that get overlooked."
     }
   ],
   "travel": [
@@ -50,7 +50,7 @@
       "alt": "skyline",
       "caption": "skyline",
       "location": "Ho Chi Minh City",
-      "description": "After living in this city for a while, I stopped looking out the window. But this sunset — the colors were so vivid they pulled me right out of my routine."
+      "description": "After living in this city for a while, I stopped looking out the window. But this sunset \u2014 the colors were so vivid they pulled me right out of my routine."
     },
     {
       "src": "images/travel-2-japanese-restaurant-wall-collage.jpg",
@@ -71,14 +71,14 @@
       "alt": "Landscape",
       "caption": "Landscape",
       "location": "Yunnan",
-      "description": "After a long climb up the mountain, this was the first view that opened before me — the town below, the lake between, and the mountains far behind. "
+      "description": "After a long climb up the mountain, this was the first view that opened before me \u2014 the town below, the lake between, and the mountains far behind. "
     },
     {
       "src": "images/travel-5-yunnan-lakeview.jpg",
       "alt": "lakeview",
       "caption": "lakeview",
       "location": "Yunnan",
-      "description": "It was a busy day of sightseeing, but this lake had a stillness to it. A quiet pause in a full day — I liked the calmness of this view."
+      "description": "It was a busy day of sightseeing, but this lake had a stillness to it. A quiet pause in a full day \u2014 I liked the calmness of this view."
     },
     {
       "src": "images/travel-6-hong-kong-skyline.jpg",
