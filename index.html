@@ -794,26 +794,31 @@
 @media(max-width:640px){
 .site-wordmark{top:18px;left:18px;font-size:25px}
 .edit-entry{top:20px;right:18px}
+.opening-section{min-height:112vh}
+.opening-sticky{height:100svh;min-height:100svh}
 .opening-title-wrap{width:92vw}
-.opening-name{font-size:clamp(68px,22vw,116px)}
-.opening-caption{margin-top:54px;font-size:10px;letter-spacing:2px}
+.opening-name{font-size:clamp(68px,22vw,116px);line-height:.78;order:1}
+.opening-caption{order:2;margin-top:16px;font-size:10px;letter-spacing:2px}
+.opening-title-wrap{
+  top:44%;display:flex;flex-direction:column;align-items:center;
+  justify-content:center
+}
 .section-intro{width:calc(100vw - 48px)}
 .section-description{font-size:14px;line-height:1.7}
 }
 @media(max-width:768px){
-    #about{padding:72px 24px 88px}
+    #about{padding:42px 24px 68px}
     .about-split{display:block;min-height:auto;padding:0}
     .about-text{display:block}
-    .about-bio{width:100%;max-width:none;font-size:16px;line-height:1.45;margin-top:20px}
+    .about-bio{width:100%;max-width:none;font-size:16px;line-height:1.45;margin-top:0}
     .about-bio p{text-indent:44px}
     .about-quote{max-width:100%;font-size:26px;margin-top:36px}
-    #art{padding:80px 24px 100px}
+    #art{padding:76px 24px 54px}
     .art-flow-item{display:flex;flex-direction:column;gap:22px}
     .art-flow-item:nth-child(even) .art-flow-image,
     .art-flow-item:nth-child(even) .art-flow-copy{grid-column:auto;grid-row:auto}
     .art-flow-copy{max-width:none}
-    #travel.places-orbit{min-height:auto;padding:88px 24px 48px;gap:28px}
-    #travel.places-orbit{background:rgba(239,233,224,.78)}
+    #travel.places-orbit{min-height:auto;padding:38px 24px 42px;gap:24px;background:transparent}
     .places-orbit__intro{display:block}
     .places-orbit__title{font-size:clamp(62px,23vw,104px);line-height:.9}
     .places-orbit__description{text-align:left;margin:18px 0 0;max-width:none}
@@ -824,7 +829,12 @@
     .places-orbit__item-caption{display:block;margin-top:12px}
     .places-orbit__item-caption .caption{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#6c735f}
     .places-orbit__item-caption .location{font-size:13px;color:#767a71;margin-top:4px}
-    .places-orbit__caption,.places-orbit__nav{display:none}
+    .places-orbit__caption,.places-orbit__nav,.places-orbit__hint{display:none}
+    .places-curtain{
+      left:-34vw;right:-34vw;top:-18vh;height:118vh;
+      clip-path:ellipse(78% 92% at 50% 100%);
+      filter:blur(10px)
+    }
     .lightbox-inner{max-width:92vw}
     .editor-toolbar{padding:8px 12px;flex-wrap:wrap;gap:6px}
     .editor-toolbar .tb-title{display:none}
@@ -1443,8 +1453,8 @@ function initPlacesCurtain(){
   const travel = document.getElementById('travel');
   if(!curtain || !travel) return;
 
-  if(shouldReduceMotion() || window.innerWidth <= 768){
-    document.documentElement.style.setProperty('--places-curtain-opacity', window.innerWidth <= 768 ? '0' : '1');
+  if(shouldReduceMotion()){
+    document.documentElement.style.setProperty('--places-curtain-opacity', '1');
     document.documentElement.style.setProperty('--places-curtain-y', '0vh');
     curtain.style.transform = '';
     return;
@@ -1463,20 +1473,21 @@ function updatePlacesCurtainProgress(){
   if(!curtain || !travel) return;
 
   const rootStyle = document.documentElement.style;
-  if(shouldReduceMotion() || window.innerWidth <= 768){
-    rootStyle.setProperty('--places-curtain-opacity', window.innerWidth <= 768 ? '0' : '1');
+  if(shouldReduceMotion()){
+    rootStyle.setProperty('--places-curtain-opacity', '1');
     rootStyle.setProperty('--places-curtain-y', '0vh');
     return;
   }
 
   const rect = travel.getBoundingClientRect();
   const viewportHeight = Math.max(window.innerHeight, 1);
-  const revealStart = viewportHeight * 0.72;
-  const revealEnd = -viewportHeight * 0.42;
+  const isMobile = window.innerWidth <= 768;
+  const revealStart = viewportHeight * (isMobile ? 0.76 : 0.72);
+  const revealEnd = viewportHeight * (isMobile ? -0.08 : -0.42);
   const raw = (revealStart - rect.top) / (revealStart - revealEnd);
   const progress = easeInOutSine(raw);
-  const y = 104 * (1 - progress);
-  const opacity = progress < 0.015 ? 0 : Math.min(1, 0.06 + progress * 0.94);
+  const y = (isMobile ? 108 : 104) * (1 - progress);
+  const opacity = progress < 0.015 ? 0 : Math.min(isMobile ? 0.92 : 1, 0.06 + progress * (isMobile ? 0.86 : 0.94));
 
   rootStyle.setProperty('--places-curtain-opacity', opacity.toFixed(3));
   rootStyle.setProperty('--places-curtain-y', `${y.toFixed(2)}vh`);
@@ -1982,7 +1993,10 @@ function computeOpeningTarget(){
   const opening = $('opening');
   if(!opening) return 1;
   const rect = opening.getBoundingClientRect();
-  const travel = Math.max(opening.offsetHeight - window.innerHeight, window.innerHeight);
+  const isMobile = window.innerWidth <= 640;
+  const travel = isMobile
+    ? Math.max(opening.offsetHeight, window.innerHeight)
+    : Math.max(opening.offsetHeight - window.innerHeight, window.innerHeight);
   return Math.min(1, Math.max(0, -rect.top / travel));
 }
 
@@ -1998,10 +2012,15 @@ function clamp01(value){
 function applyOpeningProgress(progress){
   const rootStyle = document.documentElement.style;
   const p = shouldReduceMotion() ? 1 : clamp01(progress);
+  const isMobile = window.innerWidth <= 640;
   const zoomProgress = clamp01(p / 0.38);
   const washProgress = clamp01((p - 0.24) / 0.54);
-  const nameProgress = clamp01((p - 0.46) / 0.42);
-  const captionProgress = clamp01((p - 0.62) / 0.28);
+  const nameProgress = clamp01((p - (isMobile ? 0.38 : 0.46)) / (isMobile ? 0.54 : 0.42));
+  const captionProgress = clamp01((p - (isMobile ? 0.48 : 0.62)) / (isMobile ? 0.42 : 0.28));
+  const nameY = isMobile ? 54 - 26 * nameProgress : 48 - 36 * nameProgress;
+  const captionY = isMobile ? nameY : 18 - 18 * captionProgress;
+  const nameOpacity = isMobile ? clamp01(nameProgress * 3.2) : nameProgress;
+  const captionOpacity = isMobile ? clamp01(captionProgress * 3.2) : captionProgress;
   rootStyle.setProperty('--opening-progress', p.toFixed(3));
   rootStyle.setProperty('--opening-photo-y', `${(-4 * zoomProgress - 4 * washProgress).toFixed(2)}vh`);
   rootStyle.setProperty('--opening-photo-scale', (1.08 - 0.18 * zoomProgress - 0.03 * washProgress).toFixed(3));
@@ -2012,10 +2031,10 @@ function applyOpeningProgress(progress){
   rootStyle.setProperty('--opening-veil-opacity', (0.02 + 0.18 * washProgress).toFixed(3));
   rootStyle.setProperty('--opening-blend-opacity', (0.06 + 0.24 * washProgress).toFixed(3));
   rootStyle.setProperty('--opening-blend-y', `${(28 - 28 * washProgress).toFixed(2)}vh`);
-  rootStyle.setProperty('--opening-name-y', `${(48 - 36 * nameProgress).toFixed(2)}vh`);
-  rootStyle.setProperty('--opening-name-opacity', nameProgress.toFixed(3));
-  rootStyle.setProperty('--opening-caption-y', `${(18 - 18 * captionProgress).toFixed(2)}vh`);
-  rootStyle.setProperty('--opening-caption-opacity', captionProgress.toFixed(3));
+  rootStyle.setProperty('--opening-name-y', `${nameY.toFixed(2)}vh`);
+  rootStyle.setProperty('--opening-name-opacity', nameOpacity.toFixed(3));
+  rootStyle.setProperty('--opening-caption-y', `${captionY.toFixed(2)}vh`);
+  rootStyle.setProperty('--opening-caption-opacity', captionOpacity.toFixed(3));
 }
 
 function startOpeningProgressLoop(){
