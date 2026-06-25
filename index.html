@@ -1118,6 +1118,8 @@ const TEXT_SIZE_PRESETS = [
   { key: 'xlarge', label: 'XL', value: '1.45em' }
 ];
 
+const PISSARRO_QUOTE = '"Everything is beautiful, all that matters<br>is to be able to interpret."<br><cite>&mdash; Camille Pissarro</cite>';
+
 CONTENT.textStyles = CONTENT.textStyles || {};
 let selectedStyleKey = null;
 
@@ -1126,6 +1128,9 @@ function mergeSavedContent(saved){
 
   if(saved.about && CONTENT.about){
     Object.assign(CONTENT.about, saved.about);
+    if(String(CONTENT.about.quote || '').includes('Life is a collection of fragments')){
+      CONTENT.about.quote = PISSARRO_QUOTE;
+    }
   }
 
   if(Array.isArray(saved.art)){
