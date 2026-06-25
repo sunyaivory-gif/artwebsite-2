@@ -24,17 +24,17 @@
   @property --places-glow{
     syntax:'<color>';
     inherits:true;
-    initial-value:rgba(246,208,178,.88)
+    initial-value:rgba(170,193,177,.96)
   }
   @property --places-mid{
     syntax:'<color>';
     inherits:true;
-    initial-value:rgba(246,208,178,.72)
+    initial-value:rgba(139,166,148,.92)
   }
   @property --places-halo{
     syntax:'<color>';
     inherits:true;
-    initial-value:rgba(255,238,218,.7)
+    initial-value:rgba(234,241,236,.7)
   }
   body{
     font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -50,8 +50,8 @@
     --opening-name-y:42vh;--opening-name-opacity:0;
     --opening-caption-y:18vh;--opening-caption-opacity:0;
     --places-curtain-opacity:0;--places-curtain-y:104vh;
-    --places-glow:rgba(246,208,178,.88);--places-halo:rgba(255,238,218,.7);
-    --places-mid:rgba(246,208,178,.72)
+    --places-glow:rgba(170,193,177,.96);--places-halo:rgba(234,241,236,.7);
+    --places-mid:rgba(139,166,148,.92)
   }
 
   .scroll-container{display:block;position:relative;z-index:1}
@@ -374,7 +374,7 @@
         var(--places-mid) 46%,
         var(--places-halo) 76%,
         rgba(255,248,236,.56) 100%),
-      rgba(246,208,178,.62);
+      rgba(139,166,148,.9);
     clip-path:ellipse(72% 100% at 50% 100%);
     transition:opacity 120ms linear;
     will-change:opacity,transform
@@ -1547,15 +1547,16 @@ function mixColor(a, b, amount){
 }
 
 function buildPlacesPalette(glow, mid, dark){
-  const peach = { r: 246, g: 208, b: 178 };
-  const ivory = { r: 255, g: 248, b: 236 };
-  const glowColor = mixColor(glow, peach, 0.96);
-  const midColor = mixColor(mid, peach, 0.96);
-  const haloColor = mixColor(ivory, peach, 0.18);
+  const frostedFern = { r: 170, g: 193, b: 177 };
+  const deepFern = { r: 139, g: 166, b: 148 };
+  const mist = { r: 234, g: 241, b: 236 };
+  const glowColor = mixColor(glow, frostedFern, 0.96);
+  const midColor = mixColor(mid, deepFern, 0.96);
+  const haloColor = mixColor(mist, frostedFern, 0.18);
   return {
-    glow: `rgba(${rgbParts(glowColor)},.9)`,
+    glow: `rgba(${rgbParts(glowColor)},.96)`,
     halo: `rgba(${rgbParts(haloColor)},.7)`,
-    mid: `rgba(${rgbParts(midColor)},.72)`
+    mid: `rgba(${rgbParts(midColor)},.92)`
   };
 }
 
